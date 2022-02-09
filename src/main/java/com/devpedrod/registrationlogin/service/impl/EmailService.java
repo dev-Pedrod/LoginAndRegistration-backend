@@ -33,15 +33,15 @@ public class EmailService implements IEmailService {
     public void sendAccountConfirmation(User user) {
         String token = UUID.randomUUID().toString();
         tokenService.create(new ConfirmationToken(token, now().plusMinutes(20), user));
-        String EMAIL_HTML = "<h3>Click no link abaixo para confirmar sua conta:</h3>" +
-                "<a href="+URL_CONFIRM_ACCOUNT + token + ">Confirmar Agora</a>" +
-                "<br>O link expira em 20 minutos";
+        String EMAIL_HTML = "<h3>Click on the link below to confirm your account:</h3>" +
+                "<a href="+URL_CONFIRM_ACCOUNT + token + ">Confirm Now</a>" +
+                "<br>Link will expire in 20 minutes";
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(EMAIL_HTML, true);
             helper.setTo(user.getEmail());
-            helper.setSubject("Confirm your email");
+            helper.setSubject("Confirm your account");
             emailSender.send(mimeMessage);
         } catch (MessagingException e) {
             throw new IllegalStateException("failed to send email");
