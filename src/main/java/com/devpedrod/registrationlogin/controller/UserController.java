@@ -39,4 +39,10 @@ public class UserController {
                 .message("Object created successfully! ID: " + user.getId())
                 .build());
     }
+
+    @GetMapping("/confirm-account")
+    public ResponseEntity<String> confirmAccount(@RequestParam("token") String token) {
+        tokenService.validateAndConfirmAccount(token);
+        return ResponseEntity.ok("Confirmed!");
+    }
 }
