@@ -1,6 +1,5 @@
 package com.devpedrod.registrationlogin.service.impl;
 
-import com.devpedrod.registrationlogin.enums.UserRole;
 import com.devpedrod.registrationlogin.model.User;
 import com.devpedrod.registrationlogin.repository.UserRepository;
 import com.devpedrod.registrationlogin.service.IEmailService;
