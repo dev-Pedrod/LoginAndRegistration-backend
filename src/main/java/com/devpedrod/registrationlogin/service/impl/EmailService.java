@@ -33,8 +33,9 @@ public class EmailService implements IEmailService {
     public void sendAccountConfirmation(User user) {
         String token = UUID.randomUUID().toString();
         tokenService.create(new ConfirmationToken(token, now().plusMinutes(20), user));
-        String EMAIL_HTML = "Link expire in 20 minutes <br>"
-                +"<a href="+URL_CONFIRM_ACCOUNT + token + "><button"+">Confirm Now</button></a>";
+        String EMAIL_HTML = "<h3>Click no link abaixo para confirmar sua conta:</h3>" +
+                "<a href="+URL_CONFIRM_ACCOUNT + token + ">Confirmar Agora</a>" +
+                "<br>O link expira em 20 minutos";
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
