@@ -5,6 +5,7 @@ import com.devpedrod.registrationlogin.model.User;
 import com.devpedrod.registrationlogin.service.IConfirmationTokenService;
 import com.devpedrod.registrationlogin.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -19,11 +20,13 @@ import static java.time.LocalDateTime.now;
 @Service
 public class EmailService implements IEmailService {
 
+    @Value("${URLConfirmAccount}")
+    private String URL_CONFIRM_ACCOUNT;
+
     @Autowired
     private JavaMailSender emailSender;
     @Autowired
     private IConfirmationTokenService tokenService;
-
 
     @Override
     @Async
@@ -31,9 +34,7 @@ public class EmailService implements IEmailService {
         String token = UUID.randomUUID().toString();
         tokenService.create(new ConfirmationToken(token, now().plusMinutes(20), user));
         String EMAIL_HTML = "Link expire in 20 minutes <br>"
-                +"<a href="+"http://localhost:8080/api/v1/users/confirm-account?token="+token
-                +"><button"+">Confirm Now</button></a>";
-
+                +"<a href="+URL_CONFIRM_ACCOUNT + token + "><button"+">Confirm Now</button></a>";
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
